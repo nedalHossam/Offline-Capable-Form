@@ -53,31 +53,22 @@ export class OfflineCapableFormPage implements OnInit {
   }
 
   startRecording() {
-    console.log('Start recording initiated.');
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
         this.mediaRecorder = new MediaRecorder(stream);
         this.mediaRecorder.start();
-        this.isRecording = true; // Set recording state to true
-        console.log('MediaRecorder started:', this.mediaRecorder);
-
+        this.isRecording = true;
         this.mediaRecorder.addEventListener('dataavailable', (event) => {
-          console.log('Data available:', event.data);
           this.audioChunks.push(event.data);
         });
 
         this.mediaRecorder.addEventListener('stop', () => {
-          console.log('Recording stopped.');
           this.audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
           this.audioChunks = [];
-          console.log('Audio Blob:', this.audioBlob);
           this.form.patchValue({ voiceInput: this.audioBlob });
-          console.log('Form updated with audio blob:', this.form.value);
-          this.isRecording = false; // Set recording state to false
+          this.isRecording = false;
         });
-
-        console.log('Recording setup complete.');
       })
       .catch((error) => {
         console.error('Error accessing media devices.', error);
@@ -85,10 +76,8 @@ export class OfflineCapableFormPage implements OnInit {
   }
 
   stopRecording() {
-    console.log('Stop recording initiated.');
     if (this.mediaRecorder && this.isRecording) {
       this.mediaRecorder.stop();
-      console.log('MediaRecorder stopped.');
     } else {
       console.warn('MediaRecorder is not initialized or not recording.');
     }
@@ -103,7 +92,6 @@ export class OfflineCapableFormPage implements OnInit {
       this.audio.onended = () => {
         this.isPlaying = false;
       };
-      console.log('Playing recording.');
     } else {
       console.warn('No audio blob available to play.');
     }
@@ -112,7 +100,6 @@ export class OfflineCapableFormPage implements OnInit {
   pauseRecording() {
     if (this.audio && this.isPlaying) {
       this.audio.pause();
-      console.log('Paused recording.');
     }
   }
   deleteRecording() {
@@ -124,21 +111,16 @@ export class OfflineCapableFormPage implements OnInit {
     this.audioUrl = null;
     this.isPlaying = false;
     this.form.patchValue({ voiceInput: null });
-    console.log('Recording deleted.');
   }
   async checkNetworkStatus() {
-    console.log('networkStatusChange.');
     const status = await Network.getStatus();
-    console.log('networkStatusChange.', status);
     if (status.connected) {
       this.offlineSyncService.syncWithServer();
-      console.log('status 1', status);
     }
 
     Network.addListener('networkStatusChange', (status) => {
       if (status.connected) {
         this.offlineSyncService.syncWithServer();
-        console.log('status 2', status);
       }
     });
   }

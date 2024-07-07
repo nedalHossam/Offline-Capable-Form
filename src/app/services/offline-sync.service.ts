@@ -37,7 +37,9 @@ export class OfflineSyncService {
     for (let submission of submissions) {
       try {
         await this.http
-          .post('http://localhost:3000/submissions', submission, { headers })
+          .post('https://offlineform.free.beeceptor.com', submission, {
+            headers,
+          })
           .toPromise();
         submissions = submissions.filter((sub: any) => sub !== submission);
         await this.storage.set(this.storageKey, submissions);
