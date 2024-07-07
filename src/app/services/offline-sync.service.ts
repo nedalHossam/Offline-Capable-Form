@@ -37,7 +37,7 @@ export class OfflineSyncService {
     for (let submission of submissions) {
       try {
         await this.http
-          .post('https://offlineform.free.beeceptor.com', submission, {
+          .post('https://offline-capable-form.free.beeceptor.com', submission, {
             headers,
           })
           .toPromise();
