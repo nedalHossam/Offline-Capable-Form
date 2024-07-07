@@ -1,0 +1,41 @@
+img {
+  width: 30%;
+  max-height: 100px;
+  margin-top: 10px;
+}
+
+audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.form-container {
+  padding: 20px;
+}
+
+@media (min-width: 1024px) {
+  .form-container {
+    margin: 5em 10em;
+  }
+}
+.submitBtn {
+  margin-top: 5em;
+  width: 50%;
+  left: 25%;
+  position: relative;
+}
+.required {
+  color: red;
+  font-size: 1em;
+  margin-left: 2px;
+}
+ion-label {
+  font-size: 18px;
+}
+ion-item {
+  margin-bottom: 20px;
+}
+
+ion-button {
+  margin-top: 10px;
+}

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Offline Form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <ion-item lines="full">
+        <ion-label position="floating">Text Input <span class="required">*</span></ion-label>
+        <ion-input formControlName="textInput"></ion-input>
+      </ion-item>
+      <div
+        *ngIf="form.controls['textInput'].invalid && (form.controls['textInput'].dirty || form.controls['textInput'].touched)">
+        <ion-text color="danger">Text input is required and must be less than 200 characters.</ion-text>
+      </div>
+
+      <ion-item lines="full">
+        <ion-label>Image Input <span class="required">*</span></ion-label>
+        <input type="file" #fileInput (change)="onImageSelected($event)" />
+        <img [src]="imagePreview" *ngIf="imagePreview" loading="lazy" />
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label>Voice Input <span class="required">*</span></ion-label>
+        <ion-button *ngIf="!isRecording" (click)="startRecording()" color="success" expand="block">Start
+          Recording</ion-button>
+        <ion-button *ngIf="isRecording" (click)="stopRecording()" color="warning" expand="block">Stop
+          Recording</ion-button>
+        <ion-button (click)="playRecording()" color="primary" expand="block">Play Recording</ion-button>
+        <ion-button (click)="pauseRecording()" color="warning" expand="block">Pause Recording</ion-button>
+        <ion-button (click)="deleteRecording()" *ngIf="audioUrl" color="danger" expand="block">Delete
+          Recording</ion-button>
+      </ion-item>
+
+      <audio *ngIf="audioUrl" [src]="audioUrl" controls></audio>
+
+      <div class="center-content">
+        <ion-button type="submit" [disabled]="form.invalid" expand="block" class="submitBtn">Submit</ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>
